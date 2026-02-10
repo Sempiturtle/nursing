@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+    --color-maternal-peach: #F6E6E4;
+    --color-maternal-rose: #D19A9A;
+    --color-maternal-rose-dark: #B5838D;
+    --color-maternal-sage: #B7B7A4;
+    --color-maternal-brown: #3D3028;
+    --color-maternal-cream: #FBF7F4;
+
+    --font-outfit: "Outfit", sans-serif;
+}
