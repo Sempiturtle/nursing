@@ -15,12 +15,16 @@ class EducationController extends Controller
         $this->videoService = $videoService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $articles = $this->articleService->getPublishedArticles($request->category);
-        $videos = $this->videoService->getVideosByCategory($request->category);
-        
-        return view('education.index', compact('articles', 'videos'));
+        $videos = $this->videoService->getVideosByCategory();
+        return view('education.index', compact('videos'));
+    }
+
+    public function news()
+    {
+        $articles = $this->articleService->getPublishedArticles();
+        return view('education.news', compact('articles'));
     }
 
     public function info()

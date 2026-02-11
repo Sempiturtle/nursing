@@ -13,10 +13,11 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>[x-cloak] { display: none !important; }</style>
     </head>
     <body class="font-outfit antialiased text-maternal-brown selection:bg-maternal-rose selection:text-white">
         <x-menu-overlay />
-        <div class="min-h-screen bg-maternal-peach">
+        <div class="min-h-screen bg-maternal-peach/20">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

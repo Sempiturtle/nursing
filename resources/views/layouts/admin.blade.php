@@ -27,11 +27,11 @@
         .header-blur { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
 
         /* Nav */
-        .nav-item { color: #8E8E93; font-size: 13.5px; font-weight: 500; padding: 8px 12px; border-radius: 10px; transition: all 250ms cubic-bezier(.4,0,.2,1); display: flex; align-items: center; gap: 10px; position: relative; }
-        .nav-item:hover { color: #FFFFFF; background: rgba(255,255,255,0.06); transform: translateX(2px); }
-        .nav-item.active { color: #FFFFFF; background: rgba(255,255,255,0.1); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .nav-item.active::before { content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 4px; height: 18px; background: var(--maternal-rose); border-radius: 0 4px 4px 0; box-shadow: 0 0 10px var(--maternal-rose); }
-        .nav-section { font-size: 11px; font-weight: 700; color: #52525B; letter-spacing: 0.08em; text-transform: uppercase; padding: 0 12px; margin-bottom: 8px; margin-top: 28px; }
+        .nav-item { color: #D1D1D6; font-size: 13.5px; font-weight: 600; padding: 10px 14px; border-radius: 12px; transition: all 250ms cubic-bezier(.4,0,.2,1); display: flex; align-items: center; gap: 10px; position: relative; }
+        .nav-item:hover { color: #FFFFFF; background: rgba(255,255,255,0.08); transform: translateX(4px); }
+        .nav-item.active { color: #FFFFFF; background: rgba(255,255,255,0.12); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .nav-item.active::before { content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 4px; height: 20px; background: var(--maternal-rose); border-radius: 0 4px 4px 0; box-shadow: 0 0 15px var(--maternal-rose); }
+        .nav-section { font-size: 11px; font-weight: 800; color: #A1A1AA; letter-spacing: 0.12em; text-transform: uppercase; padding: 0 14px; margin-bottom: 10px; margin-top: 32px; }
 
         /* Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -123,6 +123,16 @@
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
                 <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Clinics</span>
             </a>
+            <a id="nav-hotlines" href="{{ route('admin.hotlines.index') }}"
+               class="nav-item {{ request()->routeIs('admin.hotlines.*') ? 'active' : '' }}" title="Hotlines">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Hotlines</span>
+            </a>
+            <a id="nav-faqs" href="{{ route('admin.faqs.index') }}"
+               class="nav-item {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}" title="FAQs">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">FAQs</span>
+            </a>
 
             <div x-show="sidebarOpen" class="nav-section whitespace-nowrap">System</div>
 
@@ -132,8 +142,8 @@
                 <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Users</span>
             </a>
 
-            <a id="nav-feedback" href="{{ route('admin.dashboard') }}"
-               class="nav-item" title="Feedback">
+            <a id="nav-feedback" href="{{ route('admin.feedback.index') }}"
+               class="nav-item {{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}" title="Feedback">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
                 <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Feedback</span>
             </a>

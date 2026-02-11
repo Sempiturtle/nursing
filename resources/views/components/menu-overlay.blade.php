@@ -1,18 +1,18 @@
 @php
     $categories = [
         'Breastfeeding Info' => [
-            ['name' => 'Breastfeeding Tips', 'url' => route('education.index', ['category' => 'Tips'])],
-            ['name' => 'Latching & Attaching', 'url' => route('education.index', ['category' => 'Latching & Attaching'])],
-            ['name' => 'Proper Nutrition', 'url' => route('education.index', ['category' => 'Proper Nutrition'])],
+            ['name' => 'Breastfeeding Tips', 'url' => route('education.tips')],
+            ['name' => 'Latching & Attaching', 'url' => route('education.latching')],
+            ['name' => 'Proper Nutrition', 'url' => route('education.nutrition')],
         ],
         'Support & News' => [
-             ['name' => 'News (Articles)', 'url' => route('education.index')],
+             ['name' => 'News(article)', 'url' => route('education.news')],
              ['name' => 'Clinic Locator', 'url' => route('support.clinics')],
              ['name' => 'Emergency Hotlines', 'url' => route('support.hotlines')],
         ],
         'System' => [
-             ['name' => 'DATA (Feedback)', 'url' => '#'], // Placeholder for data/feedback logic
-             ['name' => 'FAQs', 'url' => route('faqs')],
+             ['name' => 'DATA(Feedback)', 'url' => route('feedback.index')],
+             ['name' => 'FAQS', 'url' => route('faqs')],
              ['name' => 'About Milky Way', 'url' => route('about')],
         ]
     ];

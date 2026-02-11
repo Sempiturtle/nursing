@@ -13,17 +13,24 @@ class FeedbackController extends Controller
         $this->feedbackService = $feedbackService;
     }
 
+    public function index()
+    {
+        $feedbacks = $this->feedbackService->getAllFeedback();
+        $averageRating = $this->feedbackService->getAverageRating();
+        return view('feedback.index', compact('feedbacks', 'averageRating'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|min:10',
+            'comment' => 'required|string|min:3',
             'name' => 'nullable|string|max:255',
         ]);
 
         $this->feedbackService->submitFeedback([
             'user_id' => auth()->id(),
-            'name' => $validated['name'] ?? auth()->user()->name ?? 'Anonymous',
+            'name' => (!empty($validated['name']) ? $validated['name'] : (!empty(auth()->user()->name) ? auth()->user()->name : 'A Milky Way Mother')),
             'rating' => $validated['rating'],
             'comment' => $validated['comment'],
         ]);

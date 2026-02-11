@@ -72,7 +72,7 @@
                     <h2 class="text-sm font-semibold text-zinc-900">Recent Feedback</h2>
                     <span class="text-[10px] font-semibold text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-md">Last 30 days</span>
                 </div>
-                <a href="#" class="text-[12px] text-zinc-400 font-medium hover:text-zinc-900 transition-colors">View all</a>
+                <a href="{{ route('admin.feedback.index') }}" class="text-[12px] text-zinc-400 font-medium hover:text-zinc-900 transition-colors">View all</a>
             </div>
 
             <div class="overflow-x-auto">
