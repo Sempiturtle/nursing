@@ -1,12 +1,59 @@
 @import "tailwindcss";
 
 @theme {
-    --color-maternal-peach: #F6E6E4;
+    --color-maternal-black: #000000;
+    --color-maternal-white: #FFFFFF;
+    --color-maternal-gray-soft: #F5F5F7;
+    --color-maternal-gray-dim: #86868B;
     --color-maternal-rose: #D19A9A;
     --color-maternal-rose-dark: #B5838D;
+    --color-maternal-peach: #F6E6E4;
     --color-maternal-sage: #B7B7A4;
-    --color-maternal-brown: #3D3028;
+    --color-maternal-brown: #1D1D1F;
     --color-maternal-cream: #FBF7F4;
 
     --font-outfit: "Outfit", sans-serif;
+    --font-inter: "Inter", sans-serif;
+
+    --shadow-luxury: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    --shadow-luxury-hover: 0 20px 60px -15px rgba(0, 0, 0, 0.08);
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply antialiased text-maternal-brown;
+        background-color: white;
+    }
+
+    ::selection {
+        @apply bg-maternal-rose text-white;
+    }
+}
+
+@layer components {
+    .btn-premium {
+        @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-medium transition-all duration-300;
+    }
+
+    .btn-premium-primary {
+        @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-medium transition-all duration-300 bg-maternal-black text-white transform hover:-translate-y-0.5;
+
+        &:hover {
+            background-color: var(--color-maternal-brown);
+            box-shadow: var(--shadow-luxury-hover);
+        }
+    }
+
+    .btn-premium-secondary {
+        @apply inline-flex items-center justify-center px-8 py-4 rounded-full font-medium transition-all duration-300 bg-white border border-maternal-gray-soft;
+        color: var(--color-maternal-brown);
+
+        &:hover {
+            background-color: var(--color-maternal-gray-soft);
+        }
+    }
 }

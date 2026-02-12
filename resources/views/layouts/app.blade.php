@@ -33,8 +33,7 @@
             <main>
                 {{ $slot }}
             </main>
-
-            <x-video-modal />
         </div>
+        <x-video-modal />
     </body>
 </html>

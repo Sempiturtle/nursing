@@ -18,7 +18,7 @@
         <x-menu-overlay />
         <x-video-modal />
         
-        <div class="min-h-screen bg-maternal-cream">
+        <div class="min-h-screen bg-white">
             @include('layouts.navigation-landing')
 
             <!-- Page Content -->

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 bg-maternal-peach/20 min-h-screen">
+    <div x-data="{}" class="py-12 bg-maternal-peach/20 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="mb-20 text-center">

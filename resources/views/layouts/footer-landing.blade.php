@@ -1,41 +1,48 @@
-<footer class="bg-maternal-peach/30 border-t border-maternal-peach/50 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div class="col-span-1 md:col-span-2">
-                <a href="/" class="flex items-center space-x-3 mb-6">
-                    <x-application-logo class="w-10 h-10 text-maternal-rose" />
-                    <span class="font-outfit font-bold text-2xl tracking-tight text-maternal-brown">Milky Way</span>
+<footer class="bg-white border-t border-maternal-gray-soft py-24">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+            <div class="md:col-span-5">
+                <a href="/" class="flex items-center space-x-3 mb-8">
+                    <x-application-logo class="w-8 h-8 text-maternal-brown" />
+                    <span class="font-outfit font-bold text-xl tracking-tight text-maternal-brown">Milky Way</span>
                 </a>
-                <p class="text-maternal-brown/60 max-w-sm leading-relaxed">
-                    Personalized breastfeeding support and maternal health care for every mother's unique journey. Empowering you with knowledge and local community support.
+                <p class="text-maternal-brown/50 max-w-sm leading-[1.6] text-[15px]">
+                    Redefining maternal health through personalized support and expert care networks. Designed for the modern mother.
                 </p>
             </div>
             
-            <div>
-                <h4 class="font-bold text-maternal-brown mb-6">Quick Links</h4>
-                <ul class="space-y-4 text-maternal-brown/60 text-sm">
-                    <li><a href="#" class="hover:text-maternal-rose transition">About Milky Way</a></li>
-                    <li><a href="#" class="hover:text-maternal-rose transition">Breastfeeding Info</a></li>
-                    <li><a href="#" class="hover:text-maternal-rose transition">Local Clinics</a></li>
-                    <li><a href="#" class="hover:text-maternal-rose transition">Emergency Hotlines</a></li>
+            <div class="md:col-span-2">
+                <h4 class="text-xs font-bold text-maternal-brown uppercase tracking-[0.2em] mb-8">Product</h4>
+                <ul class="space-y-4 text-[13px] text-maternal-brown/50">
+                    <li><a href="#features" class="hover:text-maternal-brown transition-colors">Features</a></li>
+                    <li><a href="#how-it-works" class="hover:text-maternal-brown transition-colors">How It Works</a></li>
+                    <li><a href="#" class="hover:text-maternal-brown transition-colors">Resources</a></li>
                 </ul>
             </div>
             
-            <div>
-                <h4 class="font-bold text-maternal-brown mb-6">Support</h4>
-                <ul class="space-y-4 text-maternal-brown/60 text-sm">
-                    <li><a href="#" class="hover:text-maternal-rose transition">FAQs</a></li>
-                    <li><a href="#" class="hover:text-maternal-rose transition">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-maternal-rose transition">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-maternal-rose transition">Terms of Service</a></li>
+            <div class="md:col-span-2">
+                <h4 class="text-xs font-bold text-maternal-brown uppercase tracking-[0.2em] mb-8">Company</h4>
+                <ul class="space-y-4 text-[13px] text-maternal-brown/50">
+                    <li><a href="#" class="hover:text-maternal-brown transition-colors">About Us</a></li>
+                    <li><a href="#" class="hover:text-maternal-brown transition-colors">Safety</a></li>
+                    <li><a href="#" class="hover:text-maternal-brown transition-colors">Support</a></li>
                 </ul>
+            </div>
+
+            <div class="md:col-span-3">
+                <h4 class="text-xs font-bold text-maternal-brown uppercase tracking-[0.2em] mb-8">Stay Connected</h4>
+                <p class="text-[13px] text-maternal-brown/50 mb-6 leading-relaxed">Join our community for the latest updates in maternal care.</p>
+                <div class="flex items-center space-x-6">
+                    <!-- Social Icons would go here as simple strokes -->
+                </div>
             </div>
         </div>
         
-        <div class="mt-16 pt-8 border-t border-maternal-peach/30 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-xs text-maternal-brown/40">
-            <p>&copy; {{ date('Y') }} Milky Way Maternal Health. All rights reserved.</p>
-            <div class="flex space-x-6">
-                <span>Design with Love by Milky Way Team</span>
+        <div class="mt-24 pt-8 border-t border-maternal-gray-soft flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p class="text-[12px] text-maternal-brown/40 uppercase tracking-widest">&copy; {{ date('Y') }} Milky Way. All rights reserved.</p>
+            <div class="flex space-x-8">
+                <a href="#" class="text-[12px] text-maternal-brown/40 hover:text-maternal-brown uppercase tracking-widest transition-colors">Privacy</a>
+                <a href="#" class="text-[12px] text-maternal-brown/40 hover:text-maternal-brown uppercase tracking-widest transition-colors">Terms</a>
             </div>
         </div>
     </div>
