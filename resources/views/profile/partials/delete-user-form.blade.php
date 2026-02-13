@@ -1,11 +1,11 @@
-<section class="space-y-6">
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
+<section class="space-y-10">
+    <header class="mb-10">
+        <h2 class="text-2xl font-black text-white tracking-tight">
             {{ __('Delete Account') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+        <p class="mt-4 text-white/40 text-sm font-medium leading-relaxed">
+            {{ __('Once your account is purged, all of its system resources and clinical data will be permanently deleted. Before initializing deletion, please download any data points that you wish to retain for your records.') }}
         </p>
     </header>
 

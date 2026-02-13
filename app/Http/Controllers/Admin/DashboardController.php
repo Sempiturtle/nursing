@@ -13,22 +13,22 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $stats = [
-            'articles'  => Article::count(),
-            'videos'    => Video::count(),
-            'clinics'   => Clinic::count(),
-            'feedback'  => Feedback::count(),
-        ];
-
-        $avgRating       = round(Feedback::avg('rating') ?: 0, 1);
-        $recentFeedback  = Feedback::latest()->take(6)->get();
+        $totalArticles   = Article::count();
+        $totalVideos     = Video::count();
+        $totalClinics    = Clinic::count();
+        $totalFeedback   = Feedback::count();
+        $avgFeedback     = Feedback::avg('rating') ?: 0;
         $totalUsers      = User::where('is_admin', false)->count();
+        $recentFeedback  = Feedback::latest()->take(6)->get();
 
         return view('admin.dashboard', compact(
-            'stats',
-            'avgRating',
-            'recentFeedback',
-            'totalUsers'
+            'totalArticles',
+            'totalVideos',
+            'totalClinics',
+            'totalFeedback',
+            'avgFeedback',
+            'totalUsers',
+            'recentFeedback'
         ));
     }
 }

@@ -1,278 +1,328 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Milky Way') }} — Admin</title>
+    <title>{{ config('app.name', 'Milky Way') }} — Infrastructure Management</title>
+    
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|outfit:400,500,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|outfit:400,500,600,700,900&display=swap" rel="stylesheet" />
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        :root {
-            --maternal-rose: #D19A9A;
-            --maternal-rose-dark: #B5838D;
-            --maternal-sage: #B7B7A4;
-            --maternal-brown: #3D3028;
-            --maternal-peach: #F6E6E4;
-            --maternal-cream: #FBF7F4;
-        }
         [x-cloak] { display: none !important; }
-        * { font-family: 'Inter', system-ui, sans-serif; }
-        .font-outfit { font-family: 'Outfit', sans-serif; }
-        .sidebar-dark { background: transparent; position: relative; }
-        .sidebar-dark::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 0% 0%, rgba(209, 154, 154, 0.08) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(183, 183, 164, 0.05) 0%, transparent 50%); pointer-events: none; }
-        .content-bg { background: #FAFAFA; position: relative; }
-        .content-bg::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 400px; background: linear-gradient(to bottom, #FBF7F4 0%, transparent 100%); pointer-events: none; }
-        .header-blur { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); }
-
-        /* Nav */
-        .nav-item { color: #D1D1D6; font-size: 13.5px; font-weight: 600; padding: 10px 14px; border-radius: 12px; transition: all 250ms cubic-bezier(.4,0,.2,1); display: flex; align-items: center; gap: 10px; position: relative; }
-        .nav-item:hover { color: #FFFFFF; background: rgba(255,255,255,0.08); transform: translateX(4px); }
-        .nav-item.active { color: #FFFFFF; background: rgba(255,255,255,0.12); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .nav-item.active::before { content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 4px; height: 20px; background: var(--maternal-rose); border-radius: 0 4px 4px 0; box-shadow: 0 0 15px var(--maternal-rose); }
-        .nav-section { font-size: 11px; font-weight: 800; color: #A1A1AA; letter-spacing: 0.12em; text-transform: uppercase; padding: 0 14px; margin-bottom: 10px; margin-top: 32px; }
-
-        /* Animations */
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes barGrow { from { width: 0; } }
-        @keyframes countUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-up { animation: fadeUp 0.5s cubic-bezier(.4,0,.2,1) forwards; opacity: 0; }
-        .animate-slide-in { animation: slideIn 0.4s cubic-bezier(.4,0,.2,1) forwards; opacity: 0; }
-        .animate-bar-grow { animation: barGrow 1s cubic-bezier(.4,0,.2,1) forwards; }
-        .animate-count { animation: countUp 0.6s cubic-bezier(.4,0,.2,1) forwards; opacity: 0; }
-        .delay-1 { animation-delay: 50ms; }
-        .delay-2 { animation-delay: 100ms; }
-        .delay-3 { animation-delay: 150ms; }
-        .delay-4 { animation-delay: 200ms; }
-        .delay-5 { animation-delay: 300ms; }
-        .delay-6 { animation-delay: 400ms; }
-
-        /* Card hover lift */
-        .card-lift { transition: all 300ms cubic-bezier(.34, 1.56, 0.64, 1); border: 1px solid rgba(0,0,0,0.05) !important; }
-        .card-lift:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02); border-color: var(--maternal-rose-dark) !important; }
-        .ambient-glow { position: relative; }
-        .ambient-glow::after { content: ''; position: absolute; inset: -1px; background: linear-gradient(45deg, var(--maternal-rose), transparent, var(--maternal-sage)); opacity: 0; transition: opacity 0.3s; border-radius: inherit; z-index: -1; }
-        .ambient-glow:hover::after { opacity: 0.15; }
-
-        /* Status dot pulse */
-        @keyframes statusPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); } 50% { box-shadow: 0 0 0 4px rgba(16,185,129,0); } }
-        .status-pulse { animation: statusPulse 2s ease-in-out infinite; }
-
-        /* Sparkline animation */
-        @keyframes sparkGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-        .spark-bar { transform-origin: bottom; animation: sparkGrow 0.6s cubic-bezier(.4,0,.2,1) forwards; transform: scaleY(0); }
+        
+        .nav-item-hover:hover .nav-icon {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
+        }
+        
+        .sidebar-active-pill {
+            background: linear-gradient(135deg, var(--color-accent-purple), var(--color-accent-pink));
+        }
     </style>
 </head>
-<body class="antialiased text-zinc-900 overflow-x-hidden">
+<body class="antialiased bg-surface-base text-text-primary selection:bg-accent-purple selection:text-white font-inter noise">
 
-<div x-data="{ sidebarOpen: true, mobileOpen: false }" 
-     class="flex min-h-screen bg-[#0C0C0E]">
-
+<div x-data="{ 
+    sidebarCollapsed: false, 
+    mobileOpen: false,
+    commandPaletteOpen: false,
+    get isSidebarOpen() { return !this.sidebarCollapsed }
+}" 
+@keydown.window.cmd.k.prevent="commandPaletteOpen = true"
+@keydown.window.ctrl.k.prevent="commandPaletteOpen = true"
+class="flex h-screen overflow-hidden bg-mesh">
 
     {{-- Mobile Overlay --}}
     <div x-show="mobileOpen" x-cloak @click="mobileOpen = false"
-         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
-         class="fixed inset-0 bg-black/50 z-[70] lg:hidden"></div>
+         x-transition:enter="transition ease-out duration-300" 
+         x-transition:enter-start="opacity-0" 
+         x-transition:enter-end="opacity-100"
+         class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70] lg:hidden"></div>
 
-{{-- Sidebar --}}
+    {{-- Sidebar --}}
     <aside :class="{ 
-               'translate-x-0': mobileOpen, 
-               '-translate-x-full lg:translate-x-0': !mobileOpen,
-               'w-[240px]': sidebarOpen, 
-               'w-0 border-none': !sidebarOpen 
+               'w-72': !sidebarCollapsed, 
+               'w-20': sidebarCollapsed,
+               'translate-x-0': mobileOpen,
+               '-translate-x-full lg:translate-x-0': !mobileOpen
            }"
-           class="fixed lg:sticky top-0 left-0 h-screen sidebar-dark flex flex-col z-[100] transition-all duration-300 border-r border-white/[0.06] overflow-hidden">
+           class="fixed lg:relative top-0 left-0 h-full glass border-r border-white/5 flex flex-col z-[100] transition-all duration-300 ease-in-out flex-shrink-0 custom-scrollbar">
 
-        <div class="h-14 flex items-center px-5 border-b border-white/[0.06] flex-shrink-0">
-            <div class="flex items-center gap-2.5 min-w-max">
-                <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:rotate-12 group-hover:scale-110 shadow-sm" style="background: linear-gradient(135deg, #fff 0%, var(--maternal-peach) 100%)">
-                    <svg class="w-4 h-4 text-zinc-900" fill="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <div class="h-20 flex items-center px-6 border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 gradient-accent rounded-xl flex items-center justify-center shadow-glow-purple group cursor-pointer transition-transform hover:scale-110 duration-500">
+                    <x-application-logo class="w-6 h-6 text-white group-hover:rotate-12 transition-transform" />
                 </div>
-                <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="text-white text-[15px] font-bold tracking-tight whitespace-nowrap font-outfit">Milky Way</span>
-                <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="text-[9px] font-bold text-white/90 bg-white/10 backdrop-blur-md px-1.5 py-0.5 rounded-md uppercase tracking-wider whitespace-nowrap">Pro</span>
+                <div x-show="!sidebarCollapsed" 
+                     x-transition:enter="transition ease-out duration-200 delay-100"
+                     x-transition:enter-start="opacity-0 -translate-x-4"
+                     x-transition:enter-end="opacity-100 translate-x-0"
+                     class="flex flex-col leading-none">
+                    <span class="text-white text-lg font-black font-outfit uppercase tracking-tighter gradient-text">Milky Way</span>
+                    <span class="text-accent-purple text-[10px] font-bold uppercase tracking-[0.2em] -mt-0.5">Control Center</span>
+                </div>
             </div>
         </div>
 
-        {{-- Nav --}}
-        <nav class="flex-1 px-3 py-3 overflow-y-auto overflow-x-hidden scrollbar-hide">
-            <div x-show="sidebarOpen" class="nav-section whitespace-nowrap" style="margin-top:8px;">General</div>
-
-            <a id="nav-dashboard" href="{{ route('admin.dashboard') }}"
-               class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" title="Dashboard">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Dashboard</span>
-            </a>
-
-            <div x-show="sidebarOpen" class="nav-section whitespace-nowrap">Content</div>
-
-            <a id="nav-articles" href="{{ route('admin.articles.index') }}"
-               class="nav-item {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}" title="Articles">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V9a2 2 0 012-2h2a2 2 0 012 2v9a2 2 0 01-2 2h-2z"/></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Articles</span>
-            </a>
-            <a id="nav-videos" href="{{ route('admin.videos.index') }}"
-               class="nav-item {{ request()->routeIs('admin.videos.*') ? 'active' : '' }}" title="Videos">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Videos</span>
-            </a>
-            <a id="nav-clinics" href="{{ route('admin.clinics.index') }}"
-               class="nav-item {{ request()->routeIs('admin.clinics.*') ? 'active' : '' }}" title="Clinics">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Clinics</span>
-            </a>
-            <a id="nav-hotlines" href="{{ route('admin.hotlines.index') }}"
-               class="nav-item {{ request()->routeIs('admin.hotlines.*') ? 'active' : '' }}" title="Hotlines">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Hotlines</span>
-            </a>
-            <a id="nav-faqs" href="{{ route('admin.faqs.index') }}"
-               class="nav-item {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}" title="FAQs">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">FAQs</span>
-            </a>
-
-            <div x-show="sidebarOpen" class="nav-section whitespace-nowrap">System</div>
-
-            <a id="nav-users" href="{{ route('admin.users.index') }}"
-               class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" title="Users">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Users</span>
-            </a>
-
-            <a id="nav-feedback" href="{{ route('admin.feedback.index') }}"
-               class="nav-item {{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}" title="Feedback">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
-                <span x-show="sidebarOpen" class="whitespace-nowrap transition-all duration-200">Feedback</span>
-            </a>
-        </nav>
-    </aside>
-
-    {{-- Main --}}
-    <main class="flex-1 flex flex-col min-w-0 min-h-screen content-bg transition-all duration-300 z-10">
-
-        <header class="sticky top-0 z-[60] h-14 header-blur border-b border-zinc-200/60 flex items-center justify-between px-6 lg:px-8">
-            <div class="flex items-center gap-3">
-                {{-- Animated hamburger --}}
-                <button id="btn-mobile-menu" @click="window.innerWidth >= 1024 ? sidebarOpen = !sidebarOpen : mobileOpen = !mobileOpen" class="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-zinc-100 active:scale-95 transition-all duration-200 -ml-1.5 group">
-                    <div class="flex flex-col items-center justify-center w-5 h-5">
-                        <span :class="(window.innerWidth >= 1024 ? sidebarOpen : mobileOpen) ? 'rotate-45 translate-y-[5px]' : ''" class="block w-5 h-[2px] bg-zinc-800 group-hover:bg-zinc-950 rounded-full transition-all duration-300 origin-center"></span>
-                        <span :class="(window.innerWidth >= 1024 ? sidebarOpen : mobileOpen) ? 'opacity-0 scale-0' : 'opacity-100 scale-100'" class="block w-3.5 h-[2px] bg-zinc-800 group-hover:bg-zinc-950 rounded-full mt-[5px] transition-all duration-200"></span>
-                        <span :class="(window.innerWidth >= 1024 ? sidebarOpen : mobileOpen) ? '-rotate-45 -translate-y-[7px]' : ''" class="block w-5 h-[2px] bg-zinc-800 group-hover:bg-zinc-950 rounded-full mt-[5px] transition-all duration-300 origin-center"></span>
-                    </div>
-                </button>
-                <h1 class="text-sm font-bold text-zinc-900 font-outfit uppercase tracking-wider">@yield('title', 'Dashboard')</h1>
+        {{-- Navigation Items --}}
+        <nav class="flex-1 py-8 overflow-y-auto px-4 space-y-2">
+            <div x-show="!sidebarCollapsed" class="px-4 mb-4">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">Dashboard</span>
             </div>
 
-            <div class="flex items-center gap-4">
-                <span class="hidden md:flex items-center gap-1.5 text-[12px] text-emerald-600 font-medium mr-2">
-                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full status-pulse"></span>
-                    All systems normal
-                </span>
+            <x-admin-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')" icon="layout-grid">
+                General Overview
+            </x-admin-nav-link>
 
-                <div class="hidden sm:flex items-center gap-1.5">
-                    <button id="btn-notifications" class="relative p-1.5 text-zinc-400 hover:text-zinc-700 rounded-md hover:bg-zinc-100 transition">
-                        <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>
-                        <span class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-white"></span>
-                    </button>
-                    <div class="w-px h-4 bg-zinc-200 mx-1"></div>
+            <div x-show="!sidebarCollapsed" class="px-4 mt-8 mb-4">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">Resources</span>
+            </div>
+
+            <x-admin-nav-link href="{{ route('admin.articles.index') }}" :active="request()->routeIs('admin.articles.*')" icon="file-text">
+                Articles Library
+            </x-admin-nav-link>
+            
+            <x-admin-nav-link href="{{ route('admin.videos.index') }}" :active="request()->routeIs('admin.videos.*')" icon="video">
+                Tutorial Hub
+            </x-admin-nav-link>
+
+            <x-admin-nav-link href="{{ route('admin.clinics.index') }}" :active="request()->routeIs('admin.clinics.*')" icon="map-pin">
+                Clinic Network
+            </x-admin-nav-link>
+
+            <div x-show="!sidebarCollapsed" class="px-4 mt-8 mb-4">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">Management</span>
+            </div>
+
+            <x-admin-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')" icon="users">
+                Access Control
+            </x-admin-nav-link>
+
+            <x-admin-nav-link href="{{ route('admin.feedback.index') }}" :active="request()->routeIs('admin.feedback.*')" icon="message-square">
+                User Insights
+            </x-admin-nav-link>
+        </nav>
+
+        {{-- User Profile Footer --}}
+        <div class="p-4 border-t border-white/5 bg-white/5">
+            <div class="flex items-center gap-3 p-2 rounded-xl transition-all duration-300 hover:bg-white/5 cursor-pointer group">
+                <div class="relative">
+                    <div class="w-10 h-10 rounded-full gradient-accent flex items-center justify-center font-bold text-white shadow-lift">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-accent-emerald border-2 border-slate-900 rounded-full"></div>
+                </div>
+                <div x-show="!sidebarCollapsed" class="flex flex-col min-w-0">
+                    <span class="text-sm font-bold text-white truncate">{{ auth()->user()->name }}</span>
+                    <span class="text-[11px] text-slate-500 truncate">Administrator</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    {{-- Main Content Window --}}
+    <main class="flex-1 h-full overflow-y-auto relative custom-scrollbar">
+        {{-- Header Bar --}}
+        <header class="sticky top-0 z-[60] h-20 bg-slate-950/80 backdrop-blur-xl border-b border-white/5 flex items-center justify-between px-8">
+            <div class="flex items-center gap-6">
+                <button @click="sidebarCollapsed = !sidebarCollapsed" 
+                        class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 text-slate-400 transition-all border border-transparent hover:border-white/10 group">
+                    <svg class="w-5 h-5 transition-transform duration-500" :class="sidebarCollapsed ? 'rotate-180' : 'rotate-0'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
+                </button>
+
+                <div class="hidden lg:flex items-center gap-3">
+                    <nav class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500">
+                        <span class="hover:text-white transition-colors cursor-pointer">Admin</span>
+                        <svg class="w-3 h-3 text-slate-700" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+                        <span class="text-white">{{ $header ?? 'Dashboard' }}</span>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-6">
+                {{-- Command Palette Trigger --}}
+                <div @click="commandPaletteOpen = true" 
+                     class="hidden md:flex items-center gap-3 px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-medium text-slate-400 cursor-pointer hover:bg-white/10 hover:border-white/20 transition-all group lg:min-w-[240px]">
+                    <svg class="w-4 h-4 text-slate-500 group-hover:text-accent-purple transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <span class="flex-1">Search Command...</span>
+                    <kbd class="flex items-center gap-1 font-sans text-slate-500 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                        <span class="text-[10px]">⌘</span>K
+                    </kbd>
                 </div>
 
-                {{-- User Profile Dropdown --}}
+                {{-- Notifications --}}
+                <button class="relative w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/5 text-slate-400 border border-transparent hover:border-white/10 transition-all group">
+                    <svg class="w-5 h-5 group-hover:animate-pulse-glow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-accent-rose rounded-full border-2 border-slate-900 animate-pulse"></span>
+                </button>
+
+                {{-- Profile Dropdown --}}
                 <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center gap-2.5 p-1 rounded-full hover:bg-zinc-50 transition group">
-                        <div class="w-8 h-8 bg-zinc-800 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 ring-2 ring-white shadow-sm group-hover:bg-zinc-700 transition-colors">
+                    <button @click="open = !open" 
+                            class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/10 group">
+                        <div class="w-8 h-8 rounded-lg gradient-accent flex items-center justify-center font-bold text-white shadow-lift text-xs">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
-                        <div class="hidden lg:flex flex-col items-start text-left">
-                            <span class="text-zinc-900 font-bold text-[13px] leading-none font-outfit">{{ auth()->user()->name }}</span>
-                            <span class="text-zinc-500 text-[10px] leading-tight mt-0.5">Administrator</span>
-                        </div>
-                        <svg class="w-3.5 h-3.5 text-zinc-400 group-hover:text-zinc-600 transition-colors" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <svg class="w-4 h-4 text-slate-500 transition-transform duration-300" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
                     </button>
 
                     <div x-show="open" @click.away="open = false" x-cloak
-                         x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 scale-95 translate-y-1" x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                         class="absolute top-full right-0 mt-2 w-56 bg-white border border-zinc-200 rounded-2xl py-2 shadow-2xl z-[100] ring-1 ring-black/5">
-                        <div class="px-4 py-3 border-b border-zinc-50">
-                            <p class="text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Signed in as</p>
-                            <p class="text-[14px] font-bold text-zinc-900 font-outfit mt-1 truncate">{{ auth()->user()->name }}</p>
-                            <p class="text-[11px] text-zinc-500 truncate mt-0.5">{{ auth()->user()->email }}</p>
-                        </div>
-                        
-                        <div class="py-1">
-                            <a href="/" target="_blank" class="flex items-center gap-3 px-4 py-2.5 text-[13px] text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition">
-                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
-                                View Portal
+                             x-transition:enter="transition ease-out duration-200" 
+                             x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             class="absolute top-full right-0 mt-3 w-64 glass-dark rounded-2xl p-2 shadow-suspended z-[100]">
+                            
+                            <div class="px-4 py-3 border-b border-white/5 mb-1">
+                                <p class="text-white font-bold text-sm tracking-tight">{{ auth()->user()->name }}</p>
+                                <p class="text-slate-500 text-xs truncate">{{ auth()->user()->email }}</p>
+                            </div>
+                            
+                            <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-white rounded-xl transition-all group">
+                                <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-500 group-hover:text-accent-purple transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                </div>
+                                Manage Profile
                             </a>
-                        </div>
 
-                        <div class="border-t border-zinc-50 pt-1 mt-1 px-2">
+                            <div class="h-px bg-white/5 my-1 mx-2"></div>
+
                             <form method="POST" action="{{ route('logout') }}">@csrf
-                                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 text-[13px] text-rose-500 font-bold hover:bg-rose-50 rounded-xl transition">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/></svg>
-                                    Sign Out
+                                <button type="submit" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-accent-rose hover:bg-accent-rose/10 rounded-xl transition-all group text-left">
+                                    <div class="w-8 h-8 rounded-lg bg-accent-rose/10 flex items-center justify-center text-accent-rose">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                                    </div>
+                                    Secure Logout
                                 </button>
                             </form>
-                        </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <div class="flex-1 px-6 lg:px-8 py-6 lg:py-8">
-            {{ $slot }}
+        {{-- Page Content Wrapper --}}
+        <div class="flex-1 px-8 py-10">
+            <div class="max-w-[1600px] mx-auto animate-slide-up-fade">
+                {{ $slot }}
+            </div>
         </div>
     </main>
+
+    {{-- Command Palette Modal --}}
+    <div x-show="commandPaletteOpen" x-cloak
+         @keydown.window.escape="commandPaletteOpen = false"
+         class="fixed inset-0 z-[200] flex items-start justify-center pt-24 px-4 sm:px-6">
+        <div x-show="commandPaletteOpen" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             @click="commandPaletteOpen = false"
+             class="fixed inset-0 bg-slate-950/80 backdrop-blur-md"></div>
+
+        <div x-show="commandPaletteOpen" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0 scale-95 translate-y-4" 
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             class="relative w-full max-w-2xl glass-dark rounded-3xl shadow-suspended border border-white/10 overflow-hidden">
+            
+            <div class="flex items-center px-6 py-4 border-b border-white/5">
+                <svg class="w-5 h-5 text-accent-purple" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" 
+                       class="ml-4 flex-1 bg-transparent border-none focus:ring-0 text-white placeholder-slate-500 text-lg font-medium" 
+                       placeholder="How can we help today?" 
+                       autofocus>
+                <div class="flex items-center gap-2 px-2 py-1 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold text-slate-500">
+                    ESC
+                </div>
+            </div>
+
+            <div class="max-height-[400px] overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                <div>
+                    <h4 class="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Shortcuts</h4>
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between px-4 py-3 hover:bg-white/5 rounded-2xl cursor-pointer group transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-accent-purple/20 group-hover:text-accent-purple transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                                </div>
+                                <span class="text-sm font-bold text-slate-300 group-hover:text-white">Create New Article</span>
+                            </div>
+                            <span class="text-[10px] font-bold text-slate-600 bg-white/5 px-2 py-1 rounded border border-white/10">A + N</span>
+                        </div>
+                        <div class="flex items-center justify-between px-4 py-3 hover:bg-white/5 rounded-2xl cursor-pointer group transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-accent-blue/20 group-hover:text-accent-blue transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/></svg>
+                                </div>
+                                <span class="text-sm font-bold text-slate-300 group-hover:text-white">Find Nearby Clinic</span>
+                            </div>
+                            <span class="text-[10px] font-bold text-slate-600 bg-white/5 px-2 py-1 rounded border border-white/10">C + F</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white/5 px-6 py-4 flex items-center justify-between border-t border-white/5">
+                <div class="flex items-center gap-4 text-[10px] font-bold text-slate-500">
+                    <span class="flex items-center gap-1.5"><kbd class="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 tracking-normal inline-flex items-center">↑↓</kbd> to navigate</span>
+                    <span class="flex items-center gap-1.5"><kbd class="bg-white/5 px-1.5 py-0.5 rounded border border-white/10 tracking-normal inline-flex items-center">ENTER</kbd> to select</span>
+                </div>
+                <div class="text-[10px] font-bold text-slate-500">
+                    Powered by MilkyWay Intelligence
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-{{-- Toast Notifications --}}
+{{-- Animated Toasts --}}
 <div x-data="{ 
-        messages: [],
-        remove(id) {
-            this.messages = this.messages.filter(m => m.id !== id)
-        },
-        add(text, type = 'success') {
+        notifications: [],
+        remove(id) { this.notifications = this.notifications.filter(n => n.id !== id) },
+        add(title, message, type = 'success') {
             const id = Date.now()
-            this.messages.push({ id, text, type })
-            setTimeout(() => this.remove(id), 5000)
+            this.notifications.push({ id, title, message, type })
+            setTimeout(() => this.remove(id), 6000)
         }
      }"
-     @notify.window="add($event.detail.text, $event.detail.type)"
-     class="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 w-full max-w-sm pointer-events-none">
+     @notify.window="add($event.detail.title || 'Notification', $event.detail.text, $event.detail.type)"
+     class="fixed bottom-8 right-8 z-[300] flex flex-col gap-4 w-full max-w-sm pointer-events-none">
     
-    <template x-for="msg in messages" :key="msg.id">
+    <template x-for="n in notifications" :key="n.id">
         <div x-show="true"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="translate-y-4 opacity-0 scale-95"
-             x-transition:enter-end="translate-y-0 opacity-100 scale-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="translate-y-0 opacity-100 scale-100"
-             x-transition:leave-end="translate-y-2 opacity-0 scale-95"
-             class="pointer-events-auto bg-white border border-zinc-200 rounded-2xl p-4 shadow-xl flex items-center gap-4 group">
+             x-transition:enter="transition ease-out duration-500"
+             x-transition:enter-start="translate-x-full opacity-0 scale-90"
+             x-transition:enter-end="translate-x-0 opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="translate-x-0 opacity-100 scale-100"
+             x-transition:leave-end="translate-x-full opacity-0 scale-90"
+             class="pointer-events-auto glass-dark rounded-3xl p-5 shadow-suspended border border-white/10 flex items-start gap-5 relative overflow-hidden group">
             
+            <div class="absolute bottom-0 left-0 h-1 bg-accent-purple animate-shimmer" style="width: 100%; transition: width 6s linear;"></div>
+
             <div :class="{
-                    'bg-emerald-50 text-emerald-500': msg.type === 'success',
-                    'bg-rose-50 text-rose-500': msg.type === 'error',
+                    'bg-accent-emerald/20 text-accent-emerald': n.type === 'success',
+                    'bg-accent-rose/20 text-accent-rose': n.type === 'error',
+                    'bg-accent-blue/20 text-accent-blue': n.type === 'info',
                  }"
-                 class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0">
-                <template x-if="msg.type === 'success'">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                 class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 animate-pulse-glow">
+                <template x-if="n.type === 'success'">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4.5 12.75l6 6 9-13.5"/></svg>
                 </template>
-                <template x-if="msg.type === 'error'">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <template x-if="n.type === 'error'">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                 </template>
             </div>
 
-            <div class="flex-1">
-                <p class="text-[14px] font-bold text-zinc-900 font-outfit" x-text="msg.text"></p>
-                <p class="text-[11px] text-zinc-400 font-medium">System Notification</p>
+            <div class="flex-1 min-w-0">
+                <p class="text-[14px] font-black text-white font-outfit uppercase tracking-wider mb-0.5" x-text="n.title"></p>
+                <p class="text-[12px] text-slate-400 font-medium leading-tight" x-text="n.message"></p>
             </div>
 
-            <button @click="remove(msg.id)" class="p-1.5 text-zinc-300 hover:text-zinc-500 transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            <button @click="remove(n.id)" class="p-1.5 text-slate-600 hover:text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
     </template>
@@ -281,7 +331,7 @@
 @if(session('success'))
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            window.dispatchEvent(new CustomEvent('notify', { detail: { text: "{{ session('success') }}", type: 'success' } }));
+            window.dispatchEvent(new CustomEvent('notify', { detail: { title: 'Success', text: "{{ session('success') }}", type: 'success' } }));
         });
     </script>
 @endif
@@ -289,10 +339,11 @@
 @if(session('error'))
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            window.dispatchEvent(new CustomEvent('notify', { detail: { text: "{{ session('error') }}", type: 'error' } }));
+            window.dispatchEvent(new CustomEvent('notify', { detail: { title: 'Security Alert', text: "{{ session('error') }}", type: 'error' } }));
         });
     </script>
 @endif
 
 </body>
 </html>
+

@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-outfit antialiased text-maternal-brown selection:bg-maternal-rose selection:text-white">
+    <body class="font-outfit antialiased text-maternal-black selection:bg-maternal-rose selection:text-white">
         <x-menu-overlay />
         <x-video-modal />
         
@@ -22,11 +22,34 @@
             @include('layouts.navigation-landing')
 
             <!-- Page Content -->
-            <main>
+            <main id="main-content">
                 {{ $slot }}
             </main>
 
             @include('layouts.footer-landing')
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            // Optionally unobserve after showing
+                            // observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                    observer.observe(el);
+                });
+            });
+        </script>
     </body>
 </html>

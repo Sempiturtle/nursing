@@ -24,7 +24,7 @@
          x-transition:enter="transition ease-out duration-300"
          x-transition:enter-start="opacity-0"
          x-transition:enter-end="opacity-100"
-         class="fixed inset-0 bg-maternal-brown/95 backdrop-blur-xl z-[60] flex flex-col pt-12">
+         class="fixed inset-0 bg-maternal-brown/95 backdrop-blur-xl z-[110] flex flex-col pt-12">
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 flex flex-col">
             <!-- Header -->

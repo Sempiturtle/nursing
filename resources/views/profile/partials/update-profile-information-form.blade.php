@@ -1,11 +1,11 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
+    <header class="mb-10">
+        <h2 class="text-2xl font-black text-text-primary tracking-tight">
             {{ __('Profile Information') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+        <p class="mt-2 text-text-dimmed text-sm font-medium">
+            {{ __("Update your account's profile identity and notification parameters.") }}
         </p>
     </header>
 

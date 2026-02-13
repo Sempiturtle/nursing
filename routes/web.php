@@ -1,27 +1,27 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\SupportController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
+use App\Http\Controllers\Admin\VideoController as AdminVideoController;
+use App\Http\Controllers\Admin\ClinicController as AdminClinicController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\HotlineController as AdminHotlineController;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\Route;
 
+/**
+ * Public Routes
+ */
 Route::get('/', function () {
-    return view('welcome');
-});
-
-// Education Module
-Route::group(['prefix' => 'education', 'as' => 'education.'], function () {
-    Route::get('/', [\App\Http\Controllers\EducationController::class, 'index'])->name('index');
-    Route::get('/news', [\App\Http\Controllers\EducationController::class, 'news'])->name('news');
-    Route::get('/info', [\App\Http\Controllers\EducationController::class, 'info'])->name('info');
-    Route::get('/tips', [\App\Http\Controllers\EducationController::class, 'tips'])->name('tips');
-    Route::get('/latching', [\App\Http\Controllers\EducationController::class, 'latching'])->name('latching');
-    Route::get('/nutrition', [\App\Http\Controllers\EducationController::class, 'nutrition'])->name('nutrition');
-    Route::get('/article/{slug}', [\App\Http\Controllers\EducationController::class, 'showArticle'])->name('article');
-});
-
-// Support Module
-Route::prefix('support')->group(function () {
-    Route::get('/clinics', [\App\Http\Controllers\SupportController::class, 'clinics'])->name('support.clinics');
-    Route::get('/hotlines', [\App\Http\Controllers\SupportController::class, 'hotlines'])->name('support.hotlines');
+    $feedbacks = Feedback::latest()->take(6)->get();
+    return view('welcome', compact('feedbacks'));
 });
 
 Route::get('/about', function () {
@@ -32,32 +32,62 @@ Route::get('/faqs', function () {
     return view('faqs');
 })->name('faqs');
 
-Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [\App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/feedback', [\App\Http\Controllers\FeedbackController::class, 'index'])->name('feedback.index');
-    Route::post('/feedback', [\App\Http\Controllers\FeedbackController::class, 'store'])->name('feedback.store');
+/**
+ * Education Module
+ */
+Route::controller(EducationController::class)->prefix('education')->name('education.')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/news', 'news')->name('news');
+    Route::get('/info', 'info')->name('info');
+    Route::get('/tips', 'tips')->name('tips');
+    Route::get('/latching', 'latching')->name('latching');
+    Route::get('/nutrition', 'nutrition')->name('nutrition');
+    Route::get('/article/{slug}', 'showArticle')->name('article');
 });
 
-// Admin Routes
+/**
+ * Support Module
+ */
+Route::controller(SupportController::class)->prefix('support')->name('support.')->group(function () {
+    Route::get('/clinics', 'clinics')->name('clinics');
+    Route::get('/hotlines', 'hotlines')->name('hotlines');
+});
+
+/**
+ * Authenticated Routes
+ */
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::patch('/', 'update')->name('update');
+        Route::delete('/', 'destroy')->name('destroy');
+    });
+
+    Route::controller(FeedbackController::class)->prefix('feedback')->name('feedback.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store');
+    });
+});
+
+/**
+ * Admin Routes
+ */
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     
-    Route::resource('articles', \App\Http\Controllers\Admin\ArticleController::class);
-    Route::resource('videos', \App\Http\Controllers\Admin\VideoController::class);
-    Route::resource('clinics', \App\Http\Controllers\Admin\ClinicController::class);
-    Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
-    Route::resource('feedback', \App\Http\Controllers\Admin\FeedbackController::class)->only(['index', 'destroy']);
-    Route::resource('faqs', \App\Http\Controllers\Admin\FaqController::class)->except(['create', 'edit', 'show']);
-    Route::resource('hotlines', \App\Http\Controllers\Admin\HotlineController::class)->except(['create', 'edit', 'show']);
+    Route::resource('articles', AdminArticleController::class);
+    Route::resource('videos', AdminVideoController::class);
+    Route::resource('clinics', AdminClinicController::class);
+    Route::resource('feedback', AdminFeedbackController::class)->only(['index', 'destroy']);
+    Route::resource('faqs', AdminFaqController::class)->except(['create', 'edit', 'show']);
+    Route::resource('hotlines', AdminHotlineController::class)->except(['create', 'edit', 'show']);
 });
 
 require __DIR__.'/auth.php';

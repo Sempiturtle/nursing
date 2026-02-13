@@ -1,58 +1,89 @@
 <x-admin-layout>
-    @section('title', 'Manage Clinics')
+    <x-slot name="header">Network</x-slot>
 
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-            <h1 class="text-2xl font-bold text-zinc-900 tracking-tight font-outfit">Clinics & Stations</h1>
-            <p class="text-sm text-zinc-500 mt-0.5">Manage health centers and lactation points</p>
+    {{-- Page header --}}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-8 mb-12 animate-slide-up-fade">
+        <div class="space-y-1">
+            <h1 class="text-3xl lg:text-4xl font-black text-white tracking-tighter font-outfit uppercase italic">
+                Care <span class="gradient-text tracking-normal not-italic lowercase font-medium opacity-80">(network)</span>
+            </h1>
+            <p class="text-slate-500 font-medium flex items-center gap-2 text-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent-blue shadow-glow-blue"></span>
+                Verified breastfeeding-friendly stations across the planetary region.
+            </p>
         </div>
-        <a href="{{ route('admin.clinics.create') }}" 
-           class="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[var(--maternal-peach)] text-zinc-900 text-[13.5px] font-bold rounded-xl hover:bg-zinc-800 hover:text-white active:scale-[0.97] transition-all shadow-md shadow-zinc-200">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            Add New Clinic
+        <a href="{{ route('admin.clinics.create') }}" class="group flex items-center gap-3 px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-white hover:bg-accent-blue hover:border-accent-blue transition-all shadow-lift">
+            Register New Station
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
         </a>
     </div>
 
-    <div class="bg-white border border-zinc-200 rounded-2xl overflow-hidden shadow-sm animate-fade-up">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
+    @if(session('success'))
+        <div class="glass animate-slide-up-fade border-accent-emerald/20 p-6 rounded-3xl mb-12 flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-2xl bg-accent-emerald/10 border border-accent-emerald/20 flex items-center justify-center text-accent-emerald shadow-glow-emerald">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <div>
+                <h4 class="text-sm font-black text-white font-outfit uppercase tracking-wider">Network Updated</h4>
+                <p class="text-slate-500 text-xs font-medium italic mt-0.5">{{ session('success') }}</p>
+            </div>
+        </div>
+    @endif
+
+    {{-- Content Table --}}
+    <div class="glass rounded-[2.5rem] border-white/5 overflow-hidden animate-slide-up-fade stagger-1">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="border-b border-zinc-100 bg-zinc-50/50">
-                        <th class="pl-6 pr-3 py-4 text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Clinic Details</th>
-                        <th class="px-3 py-4 text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Contact Info</th>
-                        <th class="px-3 py-4 text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Hours</th>
-                        <th class="px-3 pr-6 py-4 text-[11px] font-bold text-zinc-400 uppercase tracking-widest text-right">Actions</th>
+                    <tr class="bg-white/2 border-b border-white/5">
+                        <th class="pl-10 pr-3 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Station & Coordinates</th>
+                        <th class="px-3 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Communication</th>
+                        <th class="px-3 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Status</th>
+                        <th class="px-3 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Uptime</th>
+                        <th class="px-3 pr-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-right">Control</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-50">
+                <tbody class="divide-y divide-white/2">
                     @forelse($clinics as $clinic)
-                        <tr class="hover:bg-zinc-50/70 transition-colors group">
-                            <td class="pl-6 pr-3 py-5">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-[var(--maternal-rose)]/10 text-[var(--maternal-rose)] rounded-xl flex items-center justify-center flex-shrink-0">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+                        <tr class="hover:bg-white/5 transition-all duration-500 group">
+                            <td class="pl-10 pr-3 py-6">
+                                <div class="flex items-center gap-6">
+                                    <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center text-slate-500 shadow-lift group-hover:border-accent-blue/50 transition-colors">
+                                        <svg class="w-6 h-6 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
                                     </div>
-                                    <div>
-                                        <h4 class="text-[14px] font-bold text-zinc-900 font-outfit">{{ $clinic->name }}</h4>
-                                        <p class="text-[11px] text-zinc-400 font-medium truncate max-w-[200px]">{{ $clinic->address }}</p>
+                                    <div class="flex flex-col min-w-0">
+                                        <span class="text-sm font-black text-white font-outfit leading-tight mb-1 group-hover:text-accent-blue transition-colors truncate">{{ $clinic->name }}</span>
+                                        <span class="text-[11px] text-slate-500 font-medium italic truncate max-w-[280px]">{{ $clinic->address }}</span>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-3 py-5 text-[12px] text-zinc-600 font-medium">
-                                {{ $clinic->contact_number ?: 'N/A' }}
+                            <td class="px-3 py-6">
+                                <div class="flex flex-col gap-1">
+                                    <span class="text-[12px] text-white font-bold font-outfit tabular-nums tracking-tight">{{ $clinic->phone }}</span>
+                                    <span class="text-[10px] text-slate-500 font-medium italic">{{ $clinic->email }}</span>
+                                </div>
                             </td>
-                            <td class="px-3 py-5">
-                                <span class="px-2.5 py-1 bg-zinc-100 text-zinc-600 text-[10px] font-bold rounded-lg uppercase tracking-wider">{{ $clinic->operating_hours ?: '—' }}</span>
+                            <td class="px-3 py-6">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse shadow-glow-blue"></div>
+                                    <span class="text-[11px] font-bold text-white font-outfit uppercase tracking-tighter italic">Verified Station</span>
+                                </div>
                             </td>
-                            <td class="px-3 pr-6 py-5 text-right">
-                                <div class="flex items-center justify-end gap-2 text-zinc-400">
-                                    <a href="{{ route('admin.clinics.edit', $clinic) }}" class="p-2 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition active:scale-95">
-                                        <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>
+                            <td class="px-3 py-6">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Standard Window</span>
+                                    <span class="text-[11px] text-slate-500 font-medium italic">08:00 AM - 05:00 PM</span>
+                                </div>
+                            </td>
+                            <td class="px-3 pr-10 py-6 text-right">
+                                <div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
+                                    <a href="{{ route('admin.clinics.edit', $clinic) }}" class="w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-accent-blue hover:border-accent-blue rounded-xl transition-all shadow-lift">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                     </a>
-                                    <form action="{{ route('admin.clinics.destroy', $clinic) }}" method="POST" onsubmit="return confirm('Delete this clinic?')">
+                                    <form action="{{ route('admin.clinics.destroy', $clinic) }}" method="POST" onsubmit="return confirm('Remove this care station from the planetary network?')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="p-2 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition active:scale-95">
-                                            <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.053.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+                                        <button type="submit" class="w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-accent-rose hover:border-accent-rose rounded-xl transition-all shadow-lift">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </form>
                                 </div>
@@ -60,8 +91,16 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-20 text-center">
-                                <p class="text-[12px] font-bold text-zinc-400 font-outfit uppercase tracking-widest">No clinics found</p>
+                            <td colspan="5" class="px-10 py-24 text-center">
+                                <div class="flex flex-col items-center gap-6">
+                                    <div class="w-20 h-20 bg-white/2 rounded-full flex items-center justify-center text-slate-800 border-2 border-dashed border-white/5 mb-2">
+                                        <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-black text-slate-600 uppercase tracking-[0.3em]">No care stations active in this region</p>
+                                        <p class="text-[10px] text-slate-700 font-medium italic mt-2 italic">Awaiting network initialization command...</p>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @endforelse

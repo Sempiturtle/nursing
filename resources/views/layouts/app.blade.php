@@ -15,25 +15,41 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>[x-cloak] { display: none !important; }</style>
     </head>
-    <body class="font-outfit antialiased text-maternal-brown selection:bg-maternal-rose selection:text-white">
+    <body class="font-inter antialiased text-text-primary bg-surface-base selection:bg-maternal-rose selection:text-white">
         <x-menu-overlay />
-        <div class="min-h-screen bg-maternal-peach/20">
+        <div class="min-h-screen bg-surface-dim relative overflow-hidden">
+            <div class="absolute inset-0 bg-grain pointer-events-none"></div>
+            
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
             <!-- Page Content -->
-            <main>
+            <main class="relative z-10">
                 {{ $slot }}
             </main>
         </div>
         <x-video-modal />
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.1
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            // Once revealed, we don't need to observe it anymore
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                const revealElements = document.querySelectorAll('.reveal-on-scroll');
+                revealElements.forEach(el => observer.observe(el));
+            });
+        </script>
     </body>
 </html>

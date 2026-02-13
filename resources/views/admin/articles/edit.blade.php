@@ -1,78 +1,92 @@
 <x-admin-layout>
-    @section('title', 'Edit Article')
+    <x-slot name="header">Education</x-slot>
 
-    <div class="max-w-5xl mx-auto">
-        <div class="flex items-center gap-4 mb-8">
-            <a href="{{ route('admin.articles.index') }}" class="p-2 bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 transition active:scale-95 shadow-sm">
-                <svg class="w-5 h-5 text-zinc-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+    <div class="max-w-4xl mx-auto">
+        {{-- Navigation --}}
+        <div class="mb-12 animate-slide-up-fade">
+            <a href="{{ route('admin.articles.index') }}" class="group inline-flex items-center gap-3 text-[10px] font-black text-slate-500 hover:text-white transition-all uppercase tracking-[0.3em]">
+                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-accent-purple/50 group-hover:text-accent-purple transition-all">
+                    <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+                </div>
+                Return to Intelligence Index
             </a>
-            <div>
-                <h1 class="text-2xl font-bold text-zinc-900 tracking-tight font-outfit">Edit Article</h1>
-                <p class="text-sm text-zinc-500">Update educational content for mothers</p>
-            </div>
         </div>
 
-        <div class="bg-white border border-zinc-200 rounded-2xl shadow-sm overflow-hidden animate-fade-up">
-            <form action="{{ route('admin.articles.update', $article) }}" method="POST" class="p-8">
-                @csrf
-                @method('PUT')
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="md:col-span-2 space-y-6">
-                        <div>
-                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Title</label>
-                            <input type="text" name="title" value="{{ old('title', $article->title) }}" required
-                                   class="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:ring-2 focus:ring-[var(--maternal-rose)] focus:border-transparent transition text-lg font-bold font-outfit"
-                                   placeholder="Article Title">
-                            @error('title') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+        {{-- Page header --}}
+        <div class="mb-12 animate-slide-up-fade stagger-1">
+            <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tighter font-outfit uppercase italic mb-3">
+                Protocol <span class="gradient-text tracking-normal not-italic lowercase font-medium opacity-80">(recalibration)</span>
+            </h1>
+            <p class="text-slate-500 font-medium flex items-center gap-2 text-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-accent-purple shadow-glow-purple"></span>
+                Modifying existing educational transmission for the community node.
+            </p>
+        </div>
+
+        <form action="{{ route('admin.articles.update', $article) }}" method="POST" class="animate-slide-up-fade stagger-2">
+            @csrf @method('PUT')
+            <div class="glass rounded-[2.5rem] border-white/5 p-10 lg:p-12 space-y-12">
+                
+                {{-- Primary Data --}}
+                <div class="space-y-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Transmission Title</label>
+                            <input type="text" name="title" value="{{ old('title', $article->title) }}" required placeholder="Enter resource nomenclature..." 
+                                   class="w-full bg-slate-900/50 border border-white/5 rounded-2xl px-6 py-4 text-white font-outfit text-sm focus:ring-2 focus:ring-accent-purple/20 focus:border-accent-purple/40 transition-all placeholder:text-slate-700">
                         </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Content</label>
-                            <textarea name="content" rows="15" required
-                                      class="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-900 focus:ring-2 focus:ring-[var(--maternal-rose)] focus:border-transparent transition leading-relaxed font-outfit"
-                                      placeholder="Write your article content here...">{{ old('content', $article->content) }}</textarea>
-                            @error('content') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div class="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
-                            <h3 class="text-sm font-bold text-zinc-900 font-outfit mb-4">Settings</h3>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Category</label>
-                                    <select name="category" required
-                                            class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-zinc-900 focus:ring-2 focus:ring-[var(--maternal-rose)] focus:border-transparent transition">
-                                        <option value="Breastfeeding" {{ old('category', $article->category) == 'Breastfeeding' ? 'selected' : '' }}>Breastfeeding</option>
-                                        <option value="Nutrition" {{ old('category', $article->category) == 'Nutrition' ? 'selected' : '' }}>Nutrition</option>
-                                        <option value="Infant Care" {{ old('category', $article->category) == 'Infant Care' ? 'selected' : '' }}>Infant Care</option>
-                                        <option value="Mental Health" {{ old('category', $article->category) == 'Mental Health' ? 'selected' : '' }}>Mental Health</option>
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label class="block text-xs font-bold text-zinc-400 uppercase tracking-widest mb-2">Featured Image URL</label>
-                                    <input type="url" name="image" value="{{ old('image', $article->image) }}"
-                                           class="w-full bg-white border border-zinc-200 rounded-xl px-4 py-2.5 text-zinc-900 focus:ring-2 focus:ring-[var(--maternal-rose)] focus:border-transparent transition"
-                                           placeholder="https://images.unsplash.com/...">
-                                </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Classification Cluster</label>
+                            <div class="relative group">
+                                <select name="category" required
+                                        class="w-full bg-slate-900/50 border border-white/5 rounded-2xl px-6 py-4 text-white font-outfit text-sm focus:ring-2 focus:ring-accent-purple/20 focus:border-accent-purple/40 transition-all cursor-pointer appearance-none">
+                                    <option value="Breastfeeding" {{ old('category', $article->category) == 'Breastfeeding' ? 'selected' : '' }}>Breastfeeding</option>
+                                    <option value="Nutrition" {{ old('category', $article->category) == 'Nutrition' ? 'selected' : '' }}>Nutrition</option>
+                                    <option value="Infant Care" {{ old('category', $article->category) == 'Infant Care' ? 'selected' : '' }}>Infant Care</option>
+                                    <option value="Mental Health" {{ old('category', $article->category) == 'Mental Health' ? 'selected' : '' }}>Mental Health</option>
+                                </select>
+                                <svg class="w-4 h-4 text-slate-500 absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none group-hover:text-accent-purple transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"/></svg>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="p-6 bg-rose-50 rounded-2xl border border-rose-100 italic text-[12px] text-rose-600">
-                            Updates are applied immediately. Ensure your content remains accurate and supportive.
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Intel Summary</label>
+                        <textarea name="description" required rows="3" placeholder="Define the core transmission objectives..."
+                                  class="w-full bg-slate-900/50 border border-white/5 rounded-2xl px-6 py-4 text-white font-outfit text-sm focus:ring-2 focus:ring-accent-purple/20 focus:border-accent-purple/40 transition-all placeholder:text-slate-700 resize-none">{{ old('description', $article->description) }}</textarea>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] ml-1">Visual Asset Mapping (URL)</label>
+                        <input type="url" name="image" value="{{ old('image', $article->image) }}" placeholder="https://cdn.maternal.io/assets/..." 
+                               class="w-full bg-slate-900/50 border border-white/5 rounded-2xl px-6 py-4 text-white font-mono text-xs focus:ring-2 focus:ring-accent-purple/20 focus:border-accent-purple/40 transition-all placeholder:text-slate-700">
+                    </div>
+                </div>
+
+                {{-- Protocol Confirmation --}}
+                <div class="p-8 bg-slate-900/50 rounded-3xl border border-white/5 space-y-4">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-accent-amber/10 border border-accent-amber/20 flex items-center justify-center text-accent-amber shadow-glow-amber shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xs font-black text-white font-outfit uppercase tracking-widest">Recalibration Notice</h4>
+                            <p class="text-[11px] text-slate-500 font-medium italic">Committing these changes will immediately overwrite the existing transmission protocol across all community nodes. Accuracy is imperative.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-zinc-100 flex justify-end gap-3">
-                    <a href="{{ route('admin.articles.index') }}" class="px-6 py-3 border border-zinc-200 rounded-xl text-zinc-500 font-bold hover:bg-zinc-50 transition active:scale-95 uppercase tracking-widest text-[11px]">Cancel</a>
-                    <button type="submit" class="px-8 py-3 bg-[var(--maternal-brown)] text-white rounded-xl font-bold hover:bg-zinc-800 transition active:scale-95 shadow-lg shadow-zinc-200 uppercase tracking-widest text-[11px]">
-                        Save Changes
+                {{-- Control Actions --}}
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <button type="submit" class="flex-1 flex items-center justify-center gap-3 py-5 bg-white text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-accent-purple hover:text-white transition-all shadow-glow-white hover:shadow-glow-purple group">
+                        Commit Final Revision
+                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                     </button>
+                    <a href="{{ route('admin.articles.index') }}" class="sm:w-1/3 flex items-center justify-center py-5 bg-white/2 border border-white/5 text-slate-500 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:text-white transition-all">
+                        Cancel Modification
+                    </a>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </x-admin-layout>
